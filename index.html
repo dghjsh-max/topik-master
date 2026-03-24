@@ -122,15 +122,29 @@
     <script>
         // --- 데이터 풀 (배열 수정 가이드 참고) ---
         const fullQuizPool = [
-            { type: "어휘", q: "어제는 비가 많이 ( ) 운동을 하지 못했다.", options: ["와서", "오려고", "오니까", "오거든"], answer: 0, exp: "원인과 결과: -아서/어서" },
+{ type: "어휘", q: "어제는 비가 많이 ( ) 운동을 하지 못했다.", options: ["와서", "오려고", "오니까", "오거든"], answer: 0, exp: "원인과 결과: -아서/어서" },
             { type: "문법", q: "시간이 있으면 같이 영화를 ( )?", options: ["보겠어요", "볼까요", "보았어요", "봅니다"], answer: 1, exp: "제안: -ㄹ까요?" },
-            // ... 데이터 추가
+            { type: "어휘", q: "내일 친구와 영화를 보러 ( ) 했습니다.", options: ["가기", "가기로", "가야", "가면"], answer: 1, exp: "약속/결심: -기로 하다" },
+            { type: "문법", q: "한국말을 ( ) 1년 동안 공부했습니다.", options: ["배우면", "배우고", "배우러", "배우려고"], answer: 3, exp: "의도/목적: -(으)려고" },
+            { type: "어휘", q: "짐이 너무 ( ) 혼자 들 수 없어요.", options: ["무거워서", "무거우니까", "가벼워서", "가벼우니까"], answer: 0, exp: "이유: 형용사 어간 + -아서/어서" },
+            { type: "어휘", q: "길이 ( ) 약속 시간에 늦었습니다.", options: ["막혀서", "막히려고", "좁아서", "좁으려고"], answer: 0, exp: "지연의 원인: 길이 막히다" },
+            { type: "문법", q: "저는 매일 아침 사과를 ( ) 먹습니다.", options: ["하나만", "하나보다", "하나씩", "하나까지"], answer: 2, exp: "수량 단위 분배: -씩" },
+            { type: "어휘", q: "이번 시험은 생각보다 ( ) 다행이에요.", options: ["어려워서", "쉬워서", "힘들어서", "길어서"], answer: 1, exp: "다행인 상황: 쉽다" },
+            { type: "문법", q: "집에 ( ) 친구에게 전화가 왔어요.", options: ["가는 길에", "가면서", "가기 전에", "간 후에"], answer: 0, exp: "도중의 상황: -는 길에" },
+            { type: "어휘", q: "감기에 ( ) 약을 먹고 쉬었습니다.", options: ["걸려서", "걸리고", "들어서", "들고"], answer: 0, exp: "관용구: 감기에 걸리다" }
         ];
 
         const fullVocabPool = [
-            { word: "결심하다", pos: "동사", meanEn: "To decide", meanCn: "决心", ex: "공부하기로 결심했다." },
+           { word: "결심하다", pos: "동사", meanEn: "To decide", meanCn: "决心", ex: "공부하기로 결심했다." },
             { word: "경제", pos: "명사", meanEn: "Economy", meanCn: "经济", ex: "경제가 어렵다." },
-            // ... 데이터 추가
+            { word: "불편하다", pos: "형용사", meanEn: "Uncomfortable", meanCn: "不方便", ex: "교통이 불편해요." },
+            { word: "경험", pos: "명사", meanEn: "Experience", meanCn: "经验", ex: "다양한 경험을 해요." },
+            { word: "기다리다", pos: "동사", meanEn: "To wait", meanCn: "等待", ex: "친구를 기다려요." },
+            { word: "신청하다", pos: "동사", meanEn: "To apply", meanCn: "申请", ex: "수업을 신청했어요." },
+            { word: "친절하다", pos: "형용사", meanEn: "To be kind", meanCn: "亲切", ex: "그분은 아주 친절해요." },
+            { word: "특별하다", pos: "형용사", meanEn: "To be special", meanCn: "特别", ex: "오늘은 특별한 날이에요." },
+            { word: "연습하다", pos: "동사", meanEn: "To practice", meanCn: "练习", ex: "발음을 연습해요." },
+            { word: "중요하다", pos: "형용사", meanEn: "Important", meanCn: "重要", ex: "건강이 가장 중요해요." }
         ];
 
         const quotes = [
