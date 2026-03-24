@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOPIK Master - Study App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
+        .tab-active { border-bottom: 3px solid #3b82f6; color: #3b82f6; font-weight: 700; }
+        .hidden { display: none; }
+        .correct { background-color: #dcfce7; border-color: #22c55e; }
+        .incorrect { background-color: #fee2e2; border-color: #ef4444; }
+        .lang-btn-active { background-color: #3b82f6; color: white; border-color: #3b82f6; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out; }
+        .quote-card { background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%); }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-30">
+        <div class="max-w-2xl mx-auto px-4 py-4 flex justify-between items-center">
+            <button onclick="switchTab('home')" class="text-xl font-bold text-blue-600 hover:opacity-80 transition-opacity flex items-center">
+                <i class="fas fa-graduation-cap mr-2"></i>TOPIK Master
+            </button>
+            <div id="current-date" class="text-sm text-gray-500 font-medium"></div>
+        </div>
+        <nav class="flex border-t max-w-2xl mx-auto overflow-x-auto whitespace-nowrap scrollbar-hide">
+            <button onclick="switchTab('home')" id="tab-home" class="flex-1 px-4 py-3 text-center tab-active transition-all">홈</button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="flex-1 px-4 py-3 text-center text-gray-500 transition-all">퀴즈 (10)</button>
+            <button onclick="switchTab('vocab')" id="tab-vocab" class="flex-1 px-4 py-3 text-center text-gray-500 transition-all">단어 (10)</button>
+            <button onclick="switchTab('record')" id="tab-record" class="flex-1 px-4 py-3 text-center text-gray-500 transition-all">기록</button>
+        </nav>
+    </header>
+
+    <main class="max-w-2xl mx-auto px-4 mt-6">
+        <!-- HOME SECTION -->
+        <section id="section-home" class="animate-fade-in">
+            <div class="quote-card text-white p-8 rounded-3xl shadow-xl mb-8 relative overflow-hidden">
+                <div class="relative z-10">
+                    <i class="fas fa-quote-left text-3xl mb-4 opacity-50"></i>
+                    <p id="daily-quote" class="text-xl md:text-2xl font-bold leading-relaxed mb-6"></p>
+                    <p id="daily-quote-author" class="text-blue-100 text-sm"></p>
+                </div>
+                <i class="fas fa-book-open absolute -bottom-4 -right-4 text-9xl opacity-10"></i>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="switchTab('quiz')" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all text-center group">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-edit text-xl"></i>
+                    </div>
+                    <span class="font-bold text-gray-800">퀴즈 풀기</span>
+                </button>
+                <button onclick="switchTab('vocab')" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all text-center group">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-book text-xl"></i>
+                    </div>
+                    <span class="font-bold text-gray-800">단어 학습</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ SECTION -->
+        <section id="section-quiz" class="space-y-6 hidden">
+            <div id="quiz-progress-container" class="bg-white p-4 rounded-xl shadow-sm border">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-600">진행도: <span id="current-q-num">1</span>/10</span>
+                    <span id="score-display" class="text-sm font-bold text-blue-500">점수: 0</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div id="progress-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 10%"></div>
+                </div>
+            </div>
+            <div id="question-card" class="bg-white p-6 rounded-2xl shadow-md border animate-fade-in">
+                <p id="question-type" class="text-blue-500 font-bold text-xs mb-2 uppercase tracking-wider"></p>
+                <h3 id="question-text" class="text-lg font-medium text-gray-800 leading-relaxed mb-6"></h3>
+                <div id="options-container" class="space-y-3"></div>
+                <div id="explanation-container" class="mt-6 p-4 bg-blue-50 rounded-lg hidden">
+                    <p class="text-sm text-blue-800"><i class="fas fa-info-circle mr-2"></i><span id="explanation-text"></span></p>
+                </div>
+                <button id="next-btn" onclick="nextQuestion()" class="w-full mt-6 py-4 bg-blue-600 text-white rounded-xl font-bold hidden hover:bg-blue-700 transition-colors shadow-lg shadow-blue-100">다음 문제로</button>
+            </div>
+            <div id="quiz-result" class="bg-white p-8 rounded-2xl shadow-md border text-center hidden animate-fade-in">
+                <h2 class="text-2xl font-bold mb-2">오늘의 학습 완료!</h2>
+                <div id="final-score" class="text-5xl font-extrabold text-blue-600 mb-8"></div>
+                <button onclick="restartWithNewQuestions()" class="w-full py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors">다른 문제도 풀어보기</button>
+            </div>
+        </section>
+
+        <!-- VOCAB SECTION -->
+        <section id="section-vocab" class="hidden">
+            <div class="bg-green-600 text-white p-6 rounded-2xl shadow-lg mb-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold">오늘의 필수 단어</h2>
+                    <p class="text-green-100 text-sm">10개 어휘 학습</p>
+                </div>
+                <div class="flex bg-green-700 p-1 rounded-lg border border-green-500/30">
+                    <button onclick="setLanguage('en')" id="lang-en" class="px-4 py-1.5 text-xs font-bold rounded-md lang-btn-active">EN</button>
+                    <button onclick="setLanguage('cn')" id="lang-cn" class="px-4 py-1.5 text-xs font-bold rounded-md text-green-300">CN</button>
+                </div>
+            </div>
+            <div id="vocab-list" class="grid gap-4"></div>
+        </section>
+
+        <!-- RECORD SECTION -->
+        <section id="section-record" class="hidden">
+            <div class="bg-white p-6 rounded-2xl shadow-md border mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">학습 기록</h2>
+                <div id="records-container" class="space-y-3"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- 데이터 풀 (배열 수정 가이드 참고) ---
+        const fullQuizPool = [
+            { type: "어휘", q: "어제는 비가 많이 ( ) 운동을 하지 못했다.", options: ["와서", "오려고", "오니까", "오거든"], answer: 0, exp: "원인과 결과: -아서/어서" },
+            { type: "문법", q: "시간이 있으면 같이 영화를 ( )?", options: ["보겠어요", "볼까요", "보았어요", "봅니다"], answer: 1, exp: "제안: -ㄹ까요?" },
+            // ... 데이터 추가
+        ];
+
+        const fullVocabPool = [
+            { word: "결심하다", pos: "동사", meanEn: "To decide", meanCn: "决心", ex: "공부하기로 결심했다." },
+            { word: "경제", pos: "명사", meanEn: "Economy", meanCn: "经济", ex: "경제가 어렵다." },
+            // ... 데이터 추가
+        ];
+
+        const quotes = [
+            { text: "천 리 길도 한 걸음부터.", author: "한국 속담" },
+            { text: "배움에는 끝이 없다.", author: "한국 격언" }
+        ];
+
+        // --- 로직 제어 ---
+        let currentIdx = 0, score = 0, answered = false;
+        let checkedWords = new Set(), currentLang = 'en', activeQuizSet = [];
+        let usedQuestionIndices = new Set();
+
+        window.onload = () => {
+            const today = new Date();
+            document.getElementById('current-date').innerText = today.toLocaleDateString('ko-KR');
+            const quoteIdx = today.getDate() % quotes.length;
+            document.getElementById('daily-quote').innerText = `"${quotes[quoteIdx].text}"`;
+            document.getElementById('daily-quote-author').innerText = `- ${quotes[quoteIdx].author}`;
+            
+            initDailySet();
+            loadQuestion();
+            loadVocab();
+        };
+
+        function initDailySet() {
+            const day = new Date().getDate();
+            const start = (day % (fullQuizPool.length / 10)) * 10;
+            activeQuizSet = fullQuizPool.slice(start, start + 10);
+            activeVocabSet = fullVocabPool.slice(start, start + 10);
+        }
+
+        function switchTab(tab) {
+            ['home', 'quiz', 'vocab', 'record'].forEach(t => {
+                document.getElementById(`section-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).className = "flex-1 px-4 py-3 text-center text-gray-500 transition-all";
+            });
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).className = "flex-1 px-4 py-3 text-center tab-active transition-all";
+            if (tab === 'record') renderRecords();
+        }
+
+        function loadQuestion() {
+            if (currentIdx >= activeQuizSet.length) { showResult(); return; }
+            answered = false;
+            const data = activeQuizSet[currentIdx];
+            document.getElementById('question-type').innerText = data.type;
+            document.getElementById('question-text').innerText = data.q;
+            document.getElementById('current-q-num').innerText = currentIdx + 1;
+            document.getElementById('progress-bar').style.width = `${(currentIdx + 1) * 10}%`;
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            data.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-100 bg-white";
+                btn.innerHTML = `<span class="font-bold mr-3">${idx + 1}</span>${opt}`;
+                btn.onclick = () => checkAnswer(idx, btn);
+                container.appendChild(btn);
+            });
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('explanation-container').classList.add('hidden');
+        }
+
+        function checkAnswer(idx, btn) {
+            if (answered) return;
+            answered = true;
+            const data = activeQuizSet[currentIdx];
+            if (idx === data.answer) { btn.classList.add('correct'); score++; }
+            else { btn.classList.add('incorrect'); }
+            document.getElementById('explanation-text').innerText = data.exp;
+            document.getElementById('explanation-container').classList.remove('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() { currentIdx++; loadQuestion(); }
+
+        function showResult() {
+            document.getElementById('question-card').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `${score} / 10`;
+            saveRecord(score);
+        }
+
+        function saveRecord(s) {
+            const records = JSON.parse(localStorage.getItem('topik_records') || '[]');
+            records.unshift({ date: new Date().toLocaleString(), score: s });
+            localStorage.setItem('topik_records', JSON.stringify(records.slice(0, 50)));
+        }
+
+        function renderRecords() {
+            const container = document.getElementById('records-container');
+            const records = JSON.parse(localStorage.getItem('topik_records') || '[]');
+            container.innerHTML = records.map(r => `
+                <div class="flex justify-between p-3 bg-gray-50 rounded-lg border">
+                    <span>${r.date}</span><span class="font-bold">${r.score}/10</span>
+                </div>`).join('');
+        }
+
+        function setLanguage(l) { currentLang = l; loadVocab(); }
+
+        function loadVocab() {
+            const container = document.getElementById('vocab-list');
+            container.innerHTML = activeVocabSet.map((v, i) => `
+                <div class="bg-white p-4 rounded-xl border shadow-sm flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold">${v.word}</h4>
+                        <p class="text-sm text-gray-600">${currentLang === 'en' ? v.meanEn : v.meanCn}</p>
+                    </div>
+                </div>`).join('');
+        }
+
+        function restartWithNewQuestions() {
+            currentIdx = 0; score = 0;
+            initDailySet(); // 실제로는 shuffle 로직 추가 가능
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('question-card').classList.remove('hidden');
+            loadQuestion();
+        }
+    </script>
+</body>
+</html>
