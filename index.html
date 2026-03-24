@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOPIK Master AI - Study & Record</title>
+    <title>TOPIK Master - 30 Days Challenge</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -13,147 +13,208 @@
         .hidden { display: none; }
         .correct { background-color: #dcfce7; border-color: #22c55e; }
         .incorrect { background-color: #fee2e2; border-color: #ef4444; }
-        .lang-btn-active { background-color: #3b82f6; color: white; border-color: #3b82f6; }
+        .day-card-active { border: 2px solid #3b82f6; background-color: #eff6ff; }
         
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in { animation: fadeIn 0.4s ease-out; }
-        .quote-card { background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%); }
-        
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spinner { border: 3px solid rgba(0,0,0,0.1); border-left-color: #3b82f6; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
     </style>
 </head>
 <body class="min-h-screen pb-12">
 
-    <!-- Header & Navigation -->
+    <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-30">
         <div class="max-w-2xl mx-auto px-4 py-4 flex justify-between items-center">
             <button onclick="switchTab('home')" class="text-xl font-bold text-blue-600 flex items-center">
-                <i class="fas fa-brain mr-2"></i>TOPIK AI Master
+                <i class="fas fa-graduation-cap mr-2"></i>TOPIK 30일 완성
             </button>
-            <div id="current-date" class="text-[10px] text-gray-400 font-bold"></div>
+            <div id="user-progress-badge" class="text-[10px] px-3 py-1 bg-blue-100 text-blue-600 rounded-full font-bold">DAY 1</div>
         </div>
         <nav class="flex border-t max-w-2xl mx-auto">
-            <button onclick="switchTab('home')" id="tab-home" class="flex-1 px-4 py-3 text-center tab-active transition-all">홈</button>
-            <button onclick="switchTab('quiz')" id="tab-quiz" class="flex-1 px-4 py-3 text-center text-gray-500 transition-all">AI 퀴즈</button>
-            <button onclick="switchTab('vocab')" id="tab-vocab" class="flex-1 px-4 py-3 text-center text-gray-500 transition-all">AI 단어</button>
+            <button onclick="switchTab('home')" id="tab-home" class="flex-1 px-4 py-3 text-center tab-active transition-all">커리큘럼</button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="flex-1 px-4 py-3 text-center text-gray-500 transition-all">오늘의 퀴즈</button>
+            <button onclick="switchTab('vocab')" id="tab-vocab" class="flex-1 px-4 py-3 text-center text-gray-500 transition-all">오늘의 단어</button>
             <button onclick="switchTab('record')" id="tab-record" class="flex-1 px-4 py-3 text-center text-gray-500 transition-all">기록</button>
         </nav>
     </header>
 
     <main class="max-w-2xl mx-auto px-4 mt-6">
-        <!-- HOME SECTION -->
-        <section id="section-home" class="animate-fade-in">
-            <div class="quote-card text-white p-8 rounded-3xl shadow-xl mb-8 relative overflow-hidden">
-                <div class="relative z-10">
-                    <i class="fas fa-quote-left text-3xl mb-4 opacity-50"></i>
-                    <p id="daily-quote" class="text-xl font-bold leading-relaxed mb-6">AI와 함께하는 무한한 한국어 학습의 시작.</p>
-                    <p id="daily-quote-author" class="text-blue-100 text-sm">- TOPIK Master Team</p>
+        
+        <!-- HOME / CURRICULUM SECTION -->
+        <section id="section-home" class="animate-fade-in space-y-4">
+            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 rounded-3xl text-white shadow-lg mb-6">
+                <h2 class="text-2xl font-bold mb-2">30일 집중 챌린지</h2>
+                <p class="text-blue-100 text-sm mb-4">매일 10분, TOPIK 합격을 위한 필수 데이터셋 학습</p>
+                <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+                    <div id="total-progress-bar" class="bg-white h-full transition-all" style="width: 0%"></div>
                 </div>
-                <i class="fas fa-rocket absolute -bottom-4 -right-4 text-9xl opacity-10"></i>
+                <p class="text-xs mt-2 text-right opacity-80" id="progress-text">진행률: 0% (0/30)</p>
             </div>
-            
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">총 학습 점수</p>
-                    <p id="total-score-display" class="text-3xl font-black text-blue-600">0</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">기록된 세션</p>
-                    <p id="total-sessions-display" class="text-3xl font-black text-indigo-600">0</p>
-                </div>
+
+            <h3 class="font-bold text-gray-800 ml-1">학습 로드맵</h3>
+            <div id="day-grid" class="grid grid-cols-5 gap-3">
+                <!-- Days 1-30 will be generated here -->
             </div>
-            
-            <button onclick="switchTab('quiz')" class="w-full mt-6 p-6 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-100 flex items-center justify-center hover:bg-blue-700 transition-colors">
-                <i class="fas fa-play-circle mr-3 text-2xl"></i>
-                지금 바로 AI 퀴즈 시작하기
-            </button>
         </section>
 
         <!-- QUIZ SECTION -->
         <section id="section-quiz" class="hidden animate-fade-in">
-            <div id="quiz-loading" class="hidden bg-white p-12 rounded-3xl shadow-sm border text-center">
-                <div class="spinner mx-auto mb-4"></div>
-                <p class="text-gray-500 text-sm">AI가 새로운 문제를 생성 중입니다...</p>
-            </div>
-
-            <div id="quiz-content">
-                <div class="bg-white p-6 rounded-3xl shadow-sm border mb-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <span id="q-type" class="px-2 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded uppercase">AI GENERATED</span>
-                        <span id="quiz-score" class="text-sm font-bold text-blue-500">SCORE: 0</span>
-                    </div>
-                    <h3 id="q-text" class="text-lg font-medium text-gray-800 leading-relaxed mb-8">문제를 불러오고 있습니다.</h3>
-                    <div id="options-box" class="space-y-3"></div>
-                    
-                    <div id="exp-box" class="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100 hidden animate-fade-in">
-                        <p id="exp-text" class="text-sm text-indigo-800 leading-relaxed"></p>
-                    </div>
-                    
-                    <button id="next-quiz-btn" onclick="generateNewQuiz()" class="w-full mt-8 py-4 bg-gray-900 text-white rounded-xl font-bold hidden hover:bg-black transition-all flex items-center justify-center">
-                        <span>다음 문제 생성</span>
-                        <i class="fas fa-magic ml-2"></i>
-                    </button>
+            <div id="quiz-ui" class="space-y-6">
+                <div class="flex justify-between items-center text-sm font-bold text-gray-400">
+                    <span>DAY <span id="quiz-day-label">1</span> 퀴즈</span>
+                    <span id="quiz-progress-label">1 / 10</span>
                 </div>
+                <div id="quiz-card" class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                    <div id="quiz-type-tag" class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-4">VOCABULARY</div>
+                    <h3 id="quiz-question" class="text-xl font-medium text-gray-800 leading-relaxed mb-10 min-h-[80px]"></h3>
+                    <div id="quiz-options" class="grid gap-3"></div>
+                    
+                    <div id="quiz-explanation" class="mt-8 p-5 bg-blue-50 rounded-2xl border border-blue-100 hidden">
+                        <p id="explanation-text" class="text-sm text-blue-800 leading-relaxed"></p>
+                    </div>
+                    
+                    <button id="next-quiz-btn" onclick="nextQuestion()" class="w-full mt-8 py-4 bg-blue-600 text-white rounded-2xl font-bold hidden hover:bg-blue-700 shadow-lg shadow-blue-100">다음 문제</button>
+                </div>
+            </div>
+            
+            <div id="quiz-result" class="hidden bg-white p-12 rounded-3xl shadow-sm border text-center animate-fade-in">
+                <div class="text-5xl font-black text-blue-600 mb-4" id="final-score">0 / 10</div>
+                <h2 class="text-2xl font-bold mb-2">학습 완료!</h2>
+                <p class="text-gray-500 mb-8">오늘의 학습 목표를 달성하셨습니다.</p>
+                <button onclick="switchTab('home')" class="w-full py-4 bg-gray-100 text-gray-700 rounded-2xl font-bold hover:bg-gray-200">커리큘럼으로 돌아가기</button>
             </div>
         </section>
 
         <!-- VOCAB SECTION -->
         <section id="section-vocab" class="hidden animate-fade-in">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h2 class="text-xl font-bold text-gray-800">AI 오늘의 단어</h2>
-                    <p class="text-xs text-gray-400">매번 새로운 5개의 단어를 생성합니다.</p>
-                </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border mb-6 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-800">DAY <span id="vocab-day-label">1</span> 필수 어휘</h2>
                 <div class="flex bg-gray-100 p-1 rounded-lg">
                     <button onclick="setLanguage('en')" id="lang-en" class="px-3 py-1 text-xs font-bold rounded lang-btn-active">EN</button>
                     <button onclick="setLanguage('cn')" id="lang-cn" class="px-3 py-1 text-xs font-bold rounded text-gray-400">CN</button>
                 </div>
             </div>
-
-            <div id="vocab-loading" class="hidden bg-white p-12 rounded-3xl shadow-sm border text-center">
-                <div class="spinner mx-auto mb-4"></div>
-                <p class="text-gray-500 text-sm">AI가 단어장을 구성하고 있습니다...</p>
-            </div>
-
             <div id="vocab-list" class="space-y-4"></div>
-            
-            <button onclick="generateNewVocab()" class="w-full mt-8 py-4 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all shadow-lg shadow-green-100 flex items-center justify-center">
-                <i class="fas fa-sync-alt mr-2"></i>
-                새로운 단어장 생성
-            </button>
         </section>
 
         <!-- RECORD SECTION -->
         <section id="section-record" class="hidden animate-fade-in">
             <div class="bg-white p-6 rounded-3xl shadow-sm border mb-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-2">학습 히스토리</h2>
-                <p class="text-xs text-gray-400 mb-6">로컬 저장소에 저장된 최근 20개의 기록입니다.</p>
-                <div id="records-container" class="space-y-3 text-sm"></div>
-                <button onclick="clearRecords()" class="mt-8 text-xs text-red-400 font-bold hover:text-red-600 flex items-center mx-auto">
-                    <i class="fas fa-trash-alt mr-1"></i> 모든 기록 삭제
-                </button>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">나의 학습 기록</h2>
+                <div id="records-container" class="space-y-3"></div>
             </div>
         </section>
     </main>
 
     <script>
-        const apiKey = ""; // 시스템에서 자동 제공
-        let quizScore = 0;
-        let totalScore = 0;
-        let currentLang = 'en';
-        let isQuizAnswered = false;
-
-        window.onload = () => {
-            const today = new Date();
-            document.getElementById('current-date').innerText = today.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-            updateHomeStats();
+        // --- 30일 커리큘럼 데이터 구축 (초기 샘플 포함) ---
+        // 실제 운영 시 300개의 데이터셋이 들어가는 부분입니다.
+        const STUDY_DATA = {
+            1: {
+                title: "기본 조사와 인사",
+                quizzes: [
+                    { q: "저는 한국어(   ) 공부합니다.", options: ["를", "가", "는", "에"], answer: 0, type: "문법", exp: "목적격 조사: -(을/를)" },
+                    { q: "어제 시장(   ) 갔습니다.", options: ["에", "에서", "를", "가"], answer: 0, type: "문법", exp: "장소의 방향 조사: -에" },
+                    { q: "이것(   ) 사과입니까?", options: ["은", "이", "을", "가"], answer: 1, exp: "주격 조사: -이/가 (받침 있음)" },
+                    { q: "밥(   ) 먹었습니다.", options: ["을", "를", "가", "에"], answer: 0, type: "문법", exp: "목적격 조사: -을" },
+                    { q: "학교(   ) 친구를 만나요.", options: ["에서", "에", "로", "부터"], answer: 0, type: "문법", exp: "장소에서의 행위: -에서" },
+                    { q: "저는 학생(   ).", options: ["입니다", "입니까", "이에요", "해요"], answer: 0, type: "문법", exp: "단정적 종결어미: -입니다" },
+                    { q: "오늘 날씨가 (   ).", options: ["좋아요", "좋습니까", "좋아요?", "좋아서"], answer: 0, type: "어휘", exp: "형용사 현재형: 좋다 -> 좋아요" },
+                    { q: "동생(   ) 수영을 해요.", options: ["하고", "랑", "이랑", "와"], answer: 1, exp: "동반/나열: -랑 (받침 없음)" },
+                    { q: "어디(   ) 삽니까?", options: ["에", "에서", "를", "가"], answer: 0, type: "문법", exp: "존재의 장소: -에 살다" },
+                    { q: "친구(   ) 전화를 했어요.", options: ["에게", "한테", "께", "서"], answer: 0, type: "문법", exp: "대상을 나타내는 조사: -에게" }
+                ],
+                vocabs: [
+                    { word: "공부하다", pos: "동사", meanEn: "To study", meanCn: "学习", ex: "매일 한국어를 공부해요." },
+                    { word: "친구", pos: "명사", meanEn: "Friend", meanCn: "朋友", ex: "친구를 만나요." },
+                    { word: "시장", pos: "명사", meanEn: "Market", meanCn: "市场", ex: "시장에 가요." },
+                    { word: "날씨", pos: "명사", meanEn: "Weather", meanCn: "天气", ex: "오늘 날씨가 좋아요." },
+                    { word: "전화", pos: "명사", meanEn: "Phone/Call", meanCn: "电话", ex: "전화를 해요." }
+                ]
+            },
+            2: {
+                title: "숫자와 시간",
+                quizzes: Array(10).fill({ q: "Day 2 샘플 퀴즈입니다 (데이터 구축 중)", options: ["1", "2", "3", "4"], answer: 0, type: "문법", exp: "설명" }),
+                vocabs: Array(5).fill({ word: "시", pos: "명사", meanEn: "Hour", meanCn: "时", ex: "지금은 세 시예요." })
+            }
+            // ... Day 3부터 Day 30까지 데이터를 반복 확장하여 채워넣습니다.
         };
 
-        // --- 탭 전환 로직 ---
+        // Day 3 ~ 30 데이터 자동 생성 (실제 데이터 입력 전 기틀 마련)
+        for (let d = 3; d <= 30; d++) {
+            STUDY_DATA[d] = {
+                title: `Day ${d} 학습 주제`,
+                quizzes: Array(10).fill(0).map((_, i) => ({
+                    q: `Day ${d}의 실전 연습 ${i+1}번 문제입니다.`,
+                    options: ["정답", "오답1", "오답2", "오답3"],
+                    answer: 0,
+                    type: "실전",
+                    exp: "해당 일차의 문법 및 어휘 해설입니다."
+                })),
+                vocabs: Array(5).fill({ word: `단어 ${d}`, pos: "명사", meanEn: "Vocabulary", meanCn: "词汇", ex: "예문입니다." })
+            };
+        }
+
+        let currentDay = 1;
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+        let isAnswered = false;
+        let currentLang = 'en';
+
+        window.onload = () => {
+            loadProgress();
+            renderCurriculum();
+            switchTab('home');
+        };
+
+        function loadProgress() {
+            const savedDay = localStorage.getItem('topik_current_day');
+            if (savedDay) currentDay = parseInt(savedDay);
+            updateProgressUI();
+        }
+
+        function updateProgressUI() {
+            const completed = currentDay - 1;
+            const percentage = Math.min((completed / 30) * 100, 100);
+            document.getElementById('total-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('progress-text').innerText = `진행률: ${Math.round(percentage)}% (${completed}/30)`;
+            document.getElementById('user-progress-badge').innerText = `DAY ${currentDay}`;
+        }
+
+        function renderCurriculum() {
+            const grid = document.getElementById('day-grid');
+            grid.innerHTML = '';
+            for (let i = 1; i <= 30; i++) {
+                const card = document.createElement('button');
+                const isLocked = i > currentDay;
+                const isDone = i < currentDay;
+                
+                card.className = `p-4 h-24 rounded-2xl border flex flex-col items-center justify-center transition-all ${isLocked ? 'bg-gray-50 text-gray-300' : 'bg-white shadow-sm hover:shadow-md'}`;
+                if (i === currentDay) card.classList.add('day-card-active');
+                
+                card.innerHTML = `
+                    <span class="text-xs font-bold mb-1">${i}</span>
+                    <i class="fas ${isDone ? 'fa-check-circle text-green-500' : isLocked ? 'fa-lock' : 'fa-play text-blue-500'}"></i>
+                `;
+                
+                card.onclick = () => {
+                    if (i <= currentDay) {
+                        startDay(i);
+                    }
+                };
+                grid.appendChild(card);
+            }
+        }
+
+        function startDay(day) {
+            currentDay = day;
+            currentQuizIdx = 0;
+            quizScore = 0;
+            switchTab('quiz');
+        }
+
         function switchTab(tab) {
             ['home', 'quiz', 'vocab', 'record'].forEach(t => {
                 document.getElementById(`section-${t}`).classList.add('hidden');
@@ -162,152 +223,133 @@
             document.getElementById(`section-${tab}`).classList.remove('hidden');
             document.getElementById(`tab-${tab}`).className = "flex-1 px-4 py-3 text-center tab-active transition-all";
 
-            if (tab === 'quiz') generateNewQuiz();
-            if (tab === 'vocab') generateNewVocab();
+            if (tab === 'quiz') initQuiz();
+            if (tab === 'vocab') renderVocab();
             if (tab === 'record') renderRecords();
-            if (tab === 'home') updateHomeStats();
+            updateProgressUI();
         }
 
-        // --- AI API 연동 (퀴즈) ---
-        async function fetchAIContent(prompt) {
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: "Generate the requested content in JSON format." }, { text: prompt }] }],
-                        generationConfig: { responseMimeType: "application/json" }
-                    })
-                });
-                const result = await response.json();
-                return JSON.parse(result.candidates[0].content.parts[0].text);
-            } catch (e) {
-                console.error("AI Error:", e);
-                return null;
-            }
+        // --- QUIZ LOGIC ---
+        function initQuiz() {
+            document.getElementById('quiz-day-label').innerText = currentDay;
+            document.getElementById('quiz-ui').classList.remove('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            loadQuestion();
         }
 
-        async function generateNewQuiz() {
-            const loading = document.getElementById('quiz-loading');
-            const content = document.getElementById('quiz-content');
-            loading.classList.remove('hidden');
-            content.classList.add('hidden');
-            isQuizAnswered = false;
-            document.getElementById('exp-box').classList.add('hidden');
+        function loadQuestion() {
+            isAnswered = false;
+            const data = STUDY_DATA[currentDay].quizzes[currentQuizIdx];
+            document.getElementById('quiz-progress-label').innerText = `${currentQuizIdx + 1} / 10`;
+            document.getElementById('quiz-type-tag').innerText = data.type;
+            document.getElementById('quiz-question').innerText = data.q;
+            document.getElementById('quiz-explanation').classList.add('hidden');
             document.getElementById('next-quiz-btn').classList.add('hidden');
 
-            const prompt = `Generate one TOPIK level 3-4 intermediate multiple choice question. 
-            Include: "type" (Vocabulary/Grammar), "question" (with ( ) ), "options" (4 strings), "answerIndex" (0-3), "explanation" (in Korean).`;
-            
-            const data = await fetchAIContent(prompt);
-            loading.classList.add('hidden');
-            content.classList.remove('hidden');
-
-            if (data) renderQuiz(data);
-        }
-
-        function renderQuiz(data) {
-            document.getElementById('q-type').innerText = `CATEGORY: ${data.type}`;
-            document.getElementById('q-text').innerText = data.question;
-            const container = document.getElementById('options-box');
+            const container = document.getElementById('quiz-options');
             container.innerHTML = '';
             data.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-50 bg-white hover:border-blue-100 transition-all flex items-center";
-                btn.innerHTML = `<div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center font-bold mr-4 text-gray-300 text-xs">${idx + 1}</div><span class="text-sm font-medium text-gray-700">${opt}</span>`;
-                btn.onclick = () => handleQuizAnswer(idx, data.answerIndex, data.explanation, btn);
+                btn.className = "w-full text-left p-4 rounded-2xl border-2 border-gray-50 bg-white hover:border-blue-100 transition-all flex items-center group";
+                btn.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center font-bold mr-4 text-xs text-gray-400 group-hover:text-blue-500 transition-colors">${idx + 1}</div>
+                    <span class="text-sm font-medium text-gray-700">${opt}</span>
+                `;
+                btn.onclick = () => checkAnswer(idx, data.answer, data.exp, btn);
                 container.appendChild(btn);
             });
         }
 
-        function handleQuizAnswer(selected, correct, exp, btn) {
-            if (isQuizAnswered) return;
-            isQuizAnswered = true;
-            const allBtns = document.getElementById('options-box').children;
+        function checkAnswer(selected, correct, exp, btn) {
+            if (isAnswered) return;
+            isAnswered = true;
+            const allBtns = document.getElementById('quiz-options').children;
+            
             if (selected === correct) {
                 btn.classList.add('correct');
-                quizScore += 10;
-                saveScore(10);
+                quizScore++;
             } else {
                 btn.classList.add('incorrect');
                 allBtns[correct].classList.add('correct');
             }
-            document.getElementById('quiz-score').innerText = `SCORE: ${quizScore}`;
-            document.getElementById('exp-text').innerText = exp;
-            document.getElementById('exp-box').classList.remove('hidden');
+
+            document.getElementById('explanation-text').innerText = exp;
+            document.getElementById('quiz-explanation').classList.remove('hidden');
             document.getElementById('next-quiz-btn').classList.remove('hidden');
         }
 
-        // --- AI API 연동 (단어) ---
-        async function generateNewVocab() {
-            const loading = document.getElementById('vocab-loading');
-            const list = document.getElementById('vocab-list');
-            loading.classList.remove('hidden');
-            list.innerHTML = '';
-
-            const prompt = `Generate 5 essential TOPIK intermediate words. 
-            Return an array "words" containing objects: "word", "pos", "meanEn", "meanCn", "example".`;
-            
-            const data = await fetchAIContent(prompt);
-            loading.classList.add('hidden');
-            
-            if (data && data.words) {
-                list.innerHTML = data.words.map((v, i) => `
-                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm animate-fade-in" style="animation-delay: ${i * 0.1}s">
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-bold text-lg text-gray-800">${v.word}</h4>
-                            <span class="text-[10px] px-2 py-0.5 bg-green-50 text-green-600 rounded-full font-bold uppercase">${v.pos}</span>
-                        </div>
-                        <p class="text-blue-600 font-medium text-sm mb-3">${currentLang === 'en' ? v.meanEn : v.meanCn}</p>
-                        <div class="text-xs text-gray-400 bg-gray-50 p-3 rounded-lg border border-gray-100 italic">" ${v.example} "</div>
-                    </div>
-                `).join('');
+        function nextQuestion() {
+            currentQuizIdx++;
+            if (currentQuizIdx < 10) {
+                loadQuestion();
+            } else {
+                showResult();
             }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-ui').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `${quizScore} / 10`;
+            
+            if (quizScore >= 7) { // 7점 이상일 때만 다음 날짜 잠금 해제
+                if (currentDay === parseInt(localStorage.getItem('topik_current_day') || 1)) {
+                    currentDay++;
+                    localStorage.setItem('topik_current_day', currentDay);
+                }
+            }
+            saveRecord(quizScore);
+        }
+
+        // --- VOCAB LOGIC ---
+        function renderVocab() {
+            document.getElementById('vocab-day-label').innerText = currentDay;
+            const list = document.getElementById('vocab-list');
+            list.innerHTML = STUDY_DATA[currentDay].vocabs.map((v, i) => `
+                <div class="bg-white p-5 rounded-3xl border border-gray-50 shadow-sm animate-fade-in" style="animation-delay: ${i * 0.1}s">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-lg text-gray-800">${v.word}</h4>
+                        <span class="text-[10px] px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full font-bold uppercase">${v.pos}</span>
+                    </div>
+                    <p class="text-blue-600 font-medium text-sm mb-3">${currentLang === 'en' ? v.meanEn : v.meanCn}</p>
+                    <div class="text-xs text-gray-400 bg-gray-50 p-3 rounded-2xl italic flex">
+                        <i class="fas fa-quote-left mr-2 opacity-30"></i>
+                        <span>${v.ex}</span>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function setLanguage(l) {
             currentLang = l;
             document.getElementById('lang-en').className = l === 'en' ? 'px-3 py-1 text-xs font-bold rounded lang-btn-active' : 'px-3 py-1 text-xs font-bold rounded text-gray-400';
             document.getElementById('lang-cn').className = l === 'cn' ? 'px-3 py-1 text-xs font-bold rounded lang-btn-active' : 'px-3 py-1 text-xs font-bold rounded text-gray-400';
-            generateNewVocab();
+            renderVocab();
         }
 
-        // --- 기록 저장 및 관리 ---
-        function saveScore(s) {
-            const records = JSON.parse(localStorage.getItem('topik_ai_records') || '[]');
-            records.unshift({ date: new Date().toLocaleString('ko-KR'), score: s });
-            localStorage.setItem('topik_ai_records', JSON.stringify(records.slice(0, 20)));
-            updateHomeStats();
+        // --- RECORD LOGIC ---
+        function saveRecord(s) {
+            const records = JSON.parse(localStorage.getItem('topik_30days_records') || '[]');
+            records.unshift({ day: currentDay, score: s, date: new Date().toLocaleString('ko-KR') });
+            localStorage.setItem('topik_30days_records', JSON.stringify(records.slice(0, 30)));
         }
 
         function renderRecords() {
             const container = document.getElementById('records-container');
-            const records = JSON.parse(localStorage.getItem('topik_ai_records') || '[]');
+            const records = JSON.parse(localStorage.getItem('topik_30days_records') || '[]');
             if (records.length === 0) {
-                container.innerHTML = `<p class="text-center text-gray-400 py-12">아직 기록이 없습니다. 퀴즈를 풀어보세요!</p>`;
+                container.innerHTML = `<p class="text-center text-gray-400 py-12">아직 기록이 없습니다.</p>`;
                 return;
             }
             container.innerHTML = records.map(r => `
-                <div class="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-                    <span class="text-gray-400 text-[10px]">${r.date}</span>
-                    <span class="font-black text-blue-600">+${r.score}</span>
+                <div class="flex justify-between items-center p-4 bg-white rounded-2xl border border-gray-50">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-500 block">DAY ${r.day}</span>
+                        <span class="text-xs text-gray-400">${r.date}</span>
+                    </div>
+                    <span class="font-black text-lg ${r.score >= 7 ? 'text-green-500' : 'text-red-400'}">${r.score}/10</span>
                 </div>
             `).join('');
-        }
-
-        function clearRecords() {
-            if (confirm("정말 모든 학습 기록을 삭제하시겠습니까?")) {
-                localStorage.removeItem('topik_ai_records');
-                renderRecords();
-                updateHomeStats();
-            }
-        }
-
-        function updateHomeStats() {
-            const records = JSON.parse(localStorage.getItem('topik_ai_records') || '[]');
-            const total = records.reduce((sum, r) => sum + r.score, 0);
-            document.getElementById('total-score-display').innerText = total;
-            document.getElementById('total-sessions-display').innerText = records.length;
         }
     </script>
 </body>
