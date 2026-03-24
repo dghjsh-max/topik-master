@@ -91,7 +91,7 @@
             <div id="quiz-result" class="bg-white p-8 rounded-2xl shadow-md border text-center hidden animate-fade-in">
                 <h2 class="text-2xl font-bold mb-2">오늘의 학습 완료!</h2>
                 <div id="final-score" class="text-5xl font-extrabold text-blue-600 mb-8"></div>
-                <button onclick="restartWithNewQuestions()" class="w-full py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors">다른 문제도 풀어보기</button>
+                <button onclick="restartWithNewQuestions()" class="w-full py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors">다시 풀어보기</button>
             </div>
         </section>
 
@@ -120,22 +120,22 @@
     </main>
 
     <script>
-        // --- 데이터 풀 (배열 수정 가이드 참고) ---
+        // --- [Confirmed] TOPIK 3급 데이터 풀 ---
         const fullQuizPool = [
-{ type: "어휘", q: "어제는 비가 많이 ( ) 운동을 하지 못했다.", options: ["와서", "오려고", "오니까", "오거든"], answer: 0, exp: "원인과 결과: -아서/어서" },
-            { type: "문법", q: "시간이 있으면 같이 영화를 ( )?", options: ["보겠어요", "볼까요", "보았어요", "봅니다"], answer: 1, exp: "제안: -ㄹ까요?" },
-            { type: "어휘", q: "내일 친구와 영화를 보러 ( ) 했습니다.", options: ["가기", "가기로", "가야", "가면"], answer: 1, exp: "약속/결심: -기로 하다" },
-            { type: "문법", q: "한국말을 ( ) 1년 동안 공부했습니다.", options: ["배우면", "배우고", "배우러", "배우려고"], answer: 3, exp: "의도/목적: -(으)려고" },
-            { type: "어휘", q: "짐이 너무 ( ) 혼자 들 수 없어요.", options: ["무거워서", "무거우니까", "가벼워서", "가벼우니까"], answer: 0, exp: "이유: 형용사 어간 + -아서/어서" },
-            { type: "어휘", q: "길이 ( ) 약속 시간에 늦었습니다.", options: ["막혀서", "막히려고", "좁아서", "좁으려고"], answer: 0, exp: "지연의 원인: 길이 막히다" },
-            { type: "문법", q: "저는 매일 아침 사과를 ( ) 먹습니다.", options: ["하나만", "하나보다", "하나씩", "하나까지"], answer: 2, exp: "수량 단위 분배: -씩" },
-            { type: "어휘", q: "이번 시험은 생각보다 ( ) 다행이에요.", options: ["어려워서", "쉬워서", "힘들어서", "길어서"], answer: 1, exp: "다행인 상황: 쉽다" },
-            { type: "문법", q: "집에 ( ) 친구에게 전화가 왔어요.", options: ["가는 길에", "가면서", "가기 전에", "간 후에"], answer: 0, exp: "도중의 상황: -는 길에" },
-            { type: "어휘", q: "감기에 ( ) 약을 먹고 쉬었습니다.", options: ["걸려서", "걸리고", "들어서", "들고"], answer: 0, exp: "관용구: 감기에 걸리다" }
+            { type: "어휘", q: "어제는 비가 많이 (   ) 운동을 하지 못했다.", options: ["와서", "오려고", "오니까", "오거든"], answer: 0, exp: "원인과 결과: -아서/어서" },
+            { type: "문법", q: "시간이 있으면 같이 영화를 (   )?", options: ["보겠어요", "볼까요", "보았어요", "봅니다"], answer: 1, exp: "제안: -ㄹ까요?" },
+            { type: "어휘", q: "내일 친구와 영화를 보러 (   ) 했습니다.", options: ["가기", "가기로", "가야", "가면"], answer: 1, exp: "약속/결심: -기로 하다" },
+            { type: "문법", q: "한국말을 (   ) 1년 동안 공부했습니다.", options: ["배우면", "배우고", "배우러", "배우려고"], answer: 3, exp: "의도/목적: -(으)려고" },
+            { type: "어휘", q: "짐이 너무 (   ) 혼자 들 수 없어요.", options: ["무거워서", "무거우니까", "가벼워서", "가벼우니까"], answer: 0, exp: "이유: 형용사 어간 + -아서/어서" },
+            { type: "어휘", q: "길이 (   ) 약속 시간에 늦었습니다.", options: ["막혀서", "막히려고", "좁아서", "좁으려고"], answer: 0, exp: "지연의 원인: 길이 막히다" },
+            { type: "문법", q: "저는 매일 아침 사과를 (   ) 먹습니다.", options: ["하나만", "하나보다", "하나씩", "하나까지"], answer: 2, exp: "수량 단위 분배: -씩" },
+            { type: "어휘", q: "이번 시험은 생각보다 (   ) 다행이에요.", options: ["어려워서", "쉬워서", "힘들어서", "길어서"], answer: 1, exp: "다행인 상황: 쉽다" },
+            { type: "문법", q: "집에 (   ) 친구에게 전화가 왔어요.", options: ["가는 길에", "가면서", "가기 전에", "간 후에"], answer: 0, exp: "도중의 상황: -는 길에" },
+            { type: "어휘", q: "감기에 (   ) 약을 먹고 쉬었습니다.", options: ["걸려서", "걸리고", "들어서", "들고"], answer: 0, exp: "관용구: 감기에 걸리다" }
         ];
 
         const fullVocabPool = [
-           { word: "결심하다", pos: "동사", meanEn: "To decide", meanCn: "决心", ex: "공부하기로 결심했다." },
+            { word: "결심하다", pos: "동사", meanEn: "To decide", meanCn: "决心", ex: "공부하기로 결심했다." },
             { word: "경제", pos: "명사", meanEn: "Economy", meanCn: "经济", ex: "경제가 어렵다." },
             { word: "불편하다", pos: "형용사", meanEn: "Uncomfortable", meanCn: "不方便", ex: "교통이 불편해요." },
             { word: "경험", pos: "명사", meanEn: "Experience", meanCn: "经验", ex: "다양한 경험을 해요." },
@@ -149,13 +149,13 @@
 
         const quotes = [
             { text: "천 리 길도 한 걸음부터.", author: "한국 속담" },
-            { text: "배움에는 끝이 없다.", author: "한국 격언" }
+            { text: "배움에는 끝이 없다.", author: "한국 격언" },
+            { text: "시작이 반이다.", author: "한국 속담" }
         ];
 
-        // --- 로직 제어 ---
+        // --- 상태 관리 ---
         let currentIdx = 0, score = 0, answered = false;
-        let checkedWords = new Set(), currentLang = 'en', activeQuizSet = [];
-        let usedQuestionIndices = new Set();
+        let currentLang = 'en', activeQuizSet = [], activeVocabSet = [];
 
         window.onload = () => {
             const today = new Date();
@@ -169,11 +169,17 @@
             loadVocab();
         };
 
+        // [Inference] 데이터 부족 시에도 작동하도록 로직 수정
         function initDailySet() {
-            const day = new Date().getDate();
-            const start = (day % (fullQuizPool.length / 10)) * 10;
-            activeQuizSet = fullQuizPool.slice(start, start + 10);
-            activeVocabSet = fullVocabPool.slice(start, start + 10);
+            if (fullQuizPool.length <= 10) {
+                activeQuizSet = [...fullQuizPool];
+                activeVocabSet = [...fullVocabPool];
+            } else {
+                const day = new Date().getDate();
+                const start = (day % Math.floor(fullQuizPool.length / 10)) * 10;
+                activeQuizSet = fullQuizPool.slice(start, start + 10);
+                activeVocabSet = fullVocabPool.slice(start, start + 10);
+            }
         }
 
         function switchTab(tab) {
@@ -190,17 +196,19 @@
             if (currentIdx >= activeQuizSet.length) { showResult(); return; }
             answered = false;
             const data = activeQuizSet[currentIdx];
+            
             document.getElementById('question-type').innerText = data.type;
             document.getElementById('question-text').innerText = data.q;
             document.getElementById('current-q-num').innerText = currentIdx + 1;
-            document.getElementById('progress-bar').style.width = `${(currentIdx + 1) * 10}%`;
+            document.getElementById('score-display').innerText = `점수: ${score}`;
+            document.getElementById('progress-bar').style.width = `${((currentIdx + 1) / activeQuizSet.length) * 100}%`;
             
             const container = document.getElementById('options-container');
             container.innerHTML = '';
             data.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-100 bg-white";
-                btn.innerHTML = `<span class="font-bold mr-3">${idx + 1}</span>${opt}`;
+                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-100 bg-white hover:border-blue-200 transition-colors";
+                btn.innerHTML = `<span class="font-bold mr-3 text-blue-500">${idx + 1}</span>${opt}`;
                 btn.onclick = () => checkAnswer(idx, btn);
                 container.appendChild(btn);
             });
@@ -212,54 +220,80 @@
             if (answered) return;
             answered = true;
             const data = activeQuizSet[currentIdx];
-            if (idx === data.answer) { btn.classList.add('correct'); score++; }
-            else { btn.classList.add('incorrect'); }
+            const allBtns = document.getElementById('options-container').children;
+
+            if (idx === data.answer) { 
+                btn.classList.add('correct'); 
+                score++; 
+            } else { 
+                btn.classList.add('incorrect'); 
+                allBtns[data.answer].classList.add('correct');
+            }
+            
             document.getElementById('explanation-text').innerText = data.exp;
             document.getElementById('explanation-container').classList.remove('hidden');
             document.getElementById('next-btn').classList.remove('hidden');
+            document.getElementById('score-display').innerText = `점수: ${score}`;
         }
 
-        function nextQuestion() { currentIdx++; loadQuestion(); }
+        function nextQuestion() { 
+            currentIdx++; 
+            loadQuestion(); 
+        }
 
         function showResult() {
             document.getElementById('question-card').classList.add('hidden');
+            document.getElementById('quiz-progress-container').classList.add('hidden');
             document.getElementById('quiz-result').classList.remove('hidden');
-            document.getElementById('final-score').innerText = `${score} / 10`;
+            document.getElementById('final-score').innerText = `${score} / ${activeQuizSet.length}`;
             saveRecord(score);
         }
 
         function saveRecord(s) {
             const records = JSON.parse(localStorage.getItem('topik_records') || '[]');
-            records.unshift({ date: new Date().toLocaleString(), score: s });
-            localStorage.setItem('topik_records', JSON.stringify(records.slice(0, 50)));
+            records.unshift({ date: new Date().toLocaleString('ko-KR'), score: s });
+            localStorage.setItem('topik_records', JSON.stringify(records.slice(0, 10)));
         }
 
         function renderRecords() {
             const container = document.getElementById('records-container');
             const records = JSON.parse(localStorage.getItem('topik_records') || '[]');
+            if (records.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-400 py-8">아직 학습 기록이 없습니다.</p>`;
+                return;
+            }
             container.innerHTML = records.map(r => `
-                <div class="flex justify-between p-3 bg-gray-50 rounded-lg border">
-                    <span>${r.date}</span><span class="font-bold">${r.score}/10</span>
+                <div class="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <span class="text-sm text-gray-500">${r.date}</span>
+                    <span class="font-bold text-blue-600">${r.score}/10</span>
                 </div>`).join('');
         }
 
-        function setLanguage(l) { currentLang = l; loadVocab(); }
+        function setLanguage(l) { 
+            currentLang = l; 
+            document.getElementById('lang-en').className = l === 'en' ? 'px-4 py-1.5 text-xs font-bold rounded-md lang-btn-active' : 'px-4 py-1.5 text-xs font-bold rounded-md text-green-300';
+            document.getElementById('lang-cn').className = l === 'cn' ? 'px-4 py-1.5 text-xs font-bold rounded-md lang-btn-active' : 'px-4 py-1.5 text-xs font-bold rounded-md text-green-300';
+            loadVocab(); 
+        }
 
         function loadVocab() {
             const container = document.getElementById('vocab-list');
             container.innerHTML = activeVocabSet.map((v, i) => `
-                <div class="bg-white p-4 rounded-xl border shadow-sm flex justify-between items-center">
-                    <div>
-                        <h4 class="font-bold">${v.word}</h4>
-                        <p class="text-sm text-gray-600">${currentLang === 'en' ? v.meanEn : v.meanCn}</p>
+                <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm animate-fade-in" style="animation-delay: ${i * 0.05}s">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-lg text-gray-800">${v.word}</h4>
+                        <span class="text-xs px-2 py-1 bg-green-100 text-green-600 rounded-md font-medium">${v.pos}</span>
                     </div>
+                    <p class="text-blue-600 font-medium mb-2">${currentLang === 'en' ? v.meanEn : v.meanCn}</p>
+                    <p class="text-sm text-gray-500 bg-gray-50 p-2 rounded-lg italic">" ${v.ex} "</p>
                 </div>`).join('');
         }
 
         function restartWithNewQuestions() {
             currentIdx = 0; score = 0;
-            initDailySet(); // 실제로는 shuffle 로직 추가 가능
+            initDailySet();
             document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-progress-container').classList.remove('hidden');
             document.getElementById('question-card').classList.remove('hidden');
             loadQuestion();
         }
